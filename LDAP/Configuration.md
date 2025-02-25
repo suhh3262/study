@@ -51,8 +51,13 @@
 
 <br>
 
+#### 2.2 글로벌 구성 변경
+LDAP 서버의 글로벌 구성 옵션은 `/etc/openldap/slapd.d/cn=config.ldif` 파일에 저장됨
 
-
+`olcAllows` : 활성화할 기능 지정 가능
+```
+olcAllows: feature…
+```
 
 
 
