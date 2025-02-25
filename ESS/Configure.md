@@ -264,6 +264,7 @@
 
 
 ---
+<br></br>
 
 ## 2. 계산노드 붙이기 <br/>
 #### 참고
@@ -300,6 +301,26 @@
   gpfs.gskit-8.0.50-75.x86_64.rpm  gpfs.msg.en_US-4.2.3-4.noarch.rpm   gpfs.license.std-4.2.3-4.x86_64.rpm
   gpfs.docs-4.2.3-4.noarch.rpm     gpfs.crypto-4.1.1-0.x86_64.update.rpm
 ```
+- `gpfs.base-4.2.3-4.x86_64.rpm`
+    -  gpfs의 핵심 구성 요소 포함. (핵심 바이너리와 라이브러리 패키지)
+- `gpfs.gpl-4.2.3-4.noarch.rpm`
+    - gpfs에서 사용하는 GPL 라이선스가 적용된 오픈소스 구성요소 포함 (오픈소스도구/모듈)
+- `gpfs.ext-4.2.3-4.x86_64.rpm`
+    - 추가적인 확장 기능 및 드라이버 제공 (특정 H/W 지원이나 추가 기능 모듈 등이 포함되어 GPFS 기능 확장)
+- `gpfs.gskit-8.0.50-75.x86_64.rpm`
+    - IBM Global Security Kit. (gpfs에서 암호화 및 보안 통신 위해 필요한 보안 라이브러리/기능 제공)
+- `gpfs.msg.en_US-4.2.3-4.noarch.rpm`
+    - 시스템 로그, 오류 메시지 등에서 사용할 지역화된 텍스트 제공
+- `gpfs.license.std-4.2.3-4.x86_64.rpm`
+    - gpfs의 표준 라이선스 관련 파일 포함 패키지 (라이선스 인증 정보 제공)
+- `gpfs.docs-4.2.3-4.noarch.rpm`
+    - gpfs의 문서 자료 포함 (매뉴얼, 가이드, 참조문서 등 사용 및 관리에 필요한 자료)
+- `gpfs.crypto-4.1.1-0.x86_64.update.rpm`
+    - 암호화기능 업데이트 패키지 (암호화 관련 모듈의 개선사항, 버그 수정 업데이트 포함)
+
+
+
+
 
 
 
