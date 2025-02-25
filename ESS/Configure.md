@@ -318,6 +318,83 @@
 - `gpfs.crypto-4.1.1-0.x86_64.update.rpm`
     - 암호화기능 업데이트 패키지 (암호화 관련 모듈의 개선사항, 버그 수정 업데이트 포함)
 
+```
+yum install gpfs.base ~ ..    // base, docs, gskit, gpl, msg, crypto 총 6개 설치
+```
+
+```
+gpfs_rpms# cd ..
+5.2.1.0# ls
+# ls
+  genesha  smb 등 여러 rpm 나옴
+
+# cd ..
+mmfs# cd bin/
+bin# ./mmbuildgpl
+```
+
+- ./mmbuildgpl 하는 이유?
+    - gpfs의 특정 커널에서 특정 모듈을 사용하겠다고 선언
+    - gpfs는 커널 모듈을 타고 올라오기 때문에 선언해주는 과정 필요
+    - 버전은 support metrics 참고
+    - `mmlsconfig`에서 `minReleaseLevel 5.2.1.0` 되어 있으면 `5.2.0.9`는 사용 불가
+    - 최소 릴리즈 버전임
+
+- rpm 설치 후 클러스터 붙여야 함!!
+
+```
+mmaddnode -N /
+```
+- 노드파일 확인
+
+```
+# ssh s1
+# cat /root/ecore/client
+  node01-hs
+  node02-hs
+```
+- hostname 주의! hostfile은 잘못 건드리면 gpfs가 down되기 때문에 통일시켜야 함
+
+<br>
+
+```
+mmaddnode -N /root/ecore/client --accept
+```
+
+```
+mmcluster  // 확인
+```
+- quorum-manager / quorum / x
+- 아무것도 없는 건 node (client라고 보면 됨)
+
+<br>
+
+```
+mmchlicense client --accept -N node01-hs.gpfs,node02-hs.gpfs
+```
+- 계산노드를 붙이고 클라이언트에 라이센스 부여
+- 서버가 아닌 노드들은 보통 클라이언트임!
+
+<br>
+
+```
+mmlslicense  // 확인?
+```
+
+```
+mmgetstate -a
+mmlsmgr    // filesystem manager, cluster manager 확인 가능
+```
+
+```
+mmstartup -N node01-hs,node02-hs
+mmgetstate -a
+```
+
+```
+ssh n1
+df -h
+```
 
 
 
