@@ -262,5 +262,44 @@
   ```
   - gpfs 파일시스템 생긴 것 확인 가능
 
+
+---
+
+## 2. 계산노드 붙이기 <br/>
+#### 참고
+- Storage_Scale로 시작하는 것은 gpfs 패키지
+- Scale_system_DAE로 시작하는 것은 ESS 패키지
+- rpm 설치하기 전에 ssh-keygen을 통해 터널링부터 해야 함
+<br>
+
+```
+# ssh n1    // 1번 노드 접속
+# ls
+  Storage_Scale_Data_Access-5.2.1.0-x86_64-Linux-install    // 대충 이런식으로 나옴
+```
+
+```
+# ./Storage_Scale_Data_Access-5.2.1.0-x86_64-Linux-install --text-only
+```
+- 실행
+- /usr/lpp/mmfs/5.2.1.0 밑으로 파일들이 모두 이동됨
+
+<br>
   
-  
+```
+# cd /usr/lpp/mmfs/5.2.1.0
+# ls
+  gpfs_debs (우분투)
+  gpfs_rpms (레드햇)    // 여러 결과값이 나옴
+```
+
+```
+# cd gpfs_rpms/
+# ls  
+  gpfs.base-4.2.3-4.x86_64.rpm     gpfs.gpl-4.2.3-4.noarch.rpm         gpfs.ext-4.2.3-4.x86_64.rpm
+  gpfs.gskit-8.0.50-75.x86_64.rpm  gpfs.msg.en_US-4.2.3-4.noarch.rpm   gpfs.license.std-4.2.3-4.x86_64.rpm
+  gpfs.docs-4.2.3-4.noarch.rpm     gpfs.crypto-4.1.1-0.x86_64.update.rpm
+```
+
+
+
