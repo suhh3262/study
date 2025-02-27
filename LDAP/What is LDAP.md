@@ -24,7 +24,7 @@
 
 ---
 
-# 1. What is LDAP? 🧐
+#  <mark style='background-color: #ffdce0'> What is LDAP? 🧐 </mark>
 ![Image](https://github.com/user-attachments/assets/f7d34be8-9233-404d-9262-3827c8cd3a60)
 - Lightweight Directory Access Protocol
 - client-server 아키텍처를 사용하여 네트워크에서 액세스할 수 있는 중앙 정보 디렉토리를 만들 수 있는 안정적 수단 제공
