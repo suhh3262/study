@@ -10,8 +10,8 @@
    ```
   
   #### 1.1.1 참고
-      `mmcrcluster` : {}는 필수옵션, 보통 NodeFile로 생성 <br>
-      `man mmcrcluster` : /example 검색해서 n (next)로 예시들 확인</br>
+  `mmcrcluster` : {}는 필수옵션, 보통 NodeFile로 생성 <br>
+  `man mmcrcluster` : /example 검색해서 n (next)로 예시들 확인
 
 
   ### 1.2 생성
@@ -31,10 +31,8 @@
     # ib network 망은 따로 짜줌
      e.g. 172.20.0.21 sss6k01a-hs.gpfs sss6k01a-hs h1 //호스트네임 정리를 잘해줘야 함
   ```
-
-  </br>
-       ▶ sss6k01a-hs이 아니라 sss6k01a.hs인 경우, 다른 곳으로 통신될 수 있기 때문에 주의해야 함! </br>
-       ▶ 대시는 인식 가능하지만 .은 인식하지 못하기 때문 <br>
+       - sss6k01a-hs이 아니라 sss6k01a.hs인 경우, 다른 곳으로 통신될 수 있기 때문에 주의해야 함! </br>
+       - 대시는 인식 가능하지만 .은 인식하지 못하기 때문 <br>
   </br>
 
   `mmgetstate -a` : 노드가 전부 다 나옴
@@ -42,31 +40,41 @@
   `mmgetstate -help` + `h` : 숨은 옵션들 다 나옴 <br>
   `-a`: all <br>
   `-N`: Node 지정 </br><br>
-  `mmchlicense` : 라이센스 등록 <br>
-  `mmchlicense server --accept -N sss6k01a-hs, sss6k01b-hs` : 두 개의 노드에 라이센스 선언
+
+  #### 1.2.1 라이센스 부여
+  ```
+  mmchlicense : 라이센스 등록 <br>
+  mmchlicense server --accept -N sss6k01a-hs, sss6k01b-hs : 두 개의 노드에 라이센스 선언
+  ```
+
   <br></br>
   
   ### 1.3 구성
-  `mmvdisk` <br>
+  ```
+  mmvdisk
+  ```
   - Usage 부분 위에서부터 5줄 기억 (파일시스템 구성 순서), 그 아래는 조회하는 명령어
   - 위에서부터 5줄 순서대로 설정해줘야 함
 
-  #### 1.3.1 node class
-  `mmvdisk nodeclass` : nodeclass 대신 nc 사용가능 <br>
-  `mmvdisk nv create --nc BB`: Building Block (ESS가 3대일 경우 BB도 3개) </br>
+  #### 1.3.1 node class 생성
+  ```
+  mmvdisk nodeclass : nodeclass 대신 nc 사용가능
+  mmvdisk nv create --nc BB: Building Block (ESS가 3대일 경우 BB도 3개)
+  ```
 
   ```
   mmvdisk nv create --nc BB01 -N sss6k01a-hs,sss6k01b-hs // 생성
+  mmvdisk nc list // 조회
   ```
 
   <br>
   
   #### 1.3.2 server 설정
-  `mmvdisk server`<br>
-  `mmlsconfig` : 기본 옵션만 출력되는데, 히든 옵션을 통해 생성해줘야 함 </br>
+  `mmvdisk server -h`  // mmvdisk server 명령어 옵션값 확인 <br>
+  `mmlsconfig` // 기본 옵션만 출력되는데, 히든 옵션을 통해 생성해줘야 함 </br>
 
   ```
-  mmvdisk server configure // 옵션 출력
+  mmvdisk server configure // 옵션 확인
   ```
 
   ```
@@ -79,24 +87,36 @@
       - one: 한 번 내려갔다가 올라감
       - recycle은 none으로 해야 함! 기본 옵션은 all인데, gpfs가 모두 꺼지기 떄문에 무조건 none으로 주기
 
-  `mmlsconfig` : 위에 것까지 실행하고 mmlsconfig로 확인 
-  
+  ```
+  mmlsconfig  // cluster config 값 조회
+  ```
+
   <br>
 
   #### 1.3.3 RDMA에 대한 config 선언
   - 딱 4줄 들어감!
   ```
-  mmchconfig verbsRdma=enable              //RDMA 기능 활성화
-  mmchconfig verbsRdmaCm=disable           //RDMA Connection manager 비활성화
+  mmchconfig verbsRdma=enable              // RDMA 기능 활성화
+  mmchconfig verbsRdmaCm=disable           // RDMA Connection manager 비활성화
   mmchconfig verbsRdmaSend=yes             // RDMA를 통한 데이터 전송 기능 활성화
-  mmchconfig verbsPorts='mlx5_0,mlx5_1 등  // 사용할 RDMA 포트 지정
+  mmchconfig verbsPorts='mlx5_0,mlx5_1     // 사용할 RDMA 포트 지정
   ```
-  port가 변경되면 무조건 재기동 한 번 해줘야 함!
+  - port가 변경되면 무조건 재기동 한 번 해줘야 함!
+  - 추가적으로, client 설치 시 gpfs 버전을 minReleaseLevel 버전 이상으로 설치해야 함
+
+  ```
+  mmfsadm test verbs status  // RDMA 상태 체크 (enabled 확인)
+  ```
+  ```
+  mmstartup -N BB01  // BB01 node class cluster 시작
+  ```
   
   <br>
 
   #### 1.3.4 포트 확인
-  `ibstatus` <br>
+  ```
+  ibstatus
+  ```
   - 위에서 지정해준 `'mlx5_0' port 1` 이런 게 출력됨
   - 실제 device name을 줘야 하는데 위에서 지정해 준 `'mlx5_0'` 이런 게 dev name임
   - `ip a` 했을 때 뜨는 랜카드 이름은 디바이스 네임이 아님
@@ -107,7 +127,7 @@
   
   #### 1.3.5 노드 확인
   - `ssh n1`<br>
-  - `ibstatus` : 노드에 range를 통해 Port를 지정해줘야 함 <br>
+  - `ibstatus` : 노드에 range를 통해 Port를 지정해주어야 함 <br>
   
   <br>
   
@@ -150,6 +170,9 @@
   ```
   mmvdisk rg create --rg RG01 --nc BB01
   ```
+  - BB01 node class에 대한 rg 생성
+  - `--trim-da` 옵션은 하드디스크가 SATA 방식이면 명시 안 해도 됨
+  - `-v` 옵션은 virtualization state (가상화)
 
   - 참고
       - hybrid / capacity(용량) model
@@ -192,7 +215,8 @@
   - 볼륨 구성할 때 사이즈는 똑같이 구성해야 함 (성능 이슈)
 
   <br>
-  
+
+  #### 1.3.8.1 볼륨 확인
   ```
   mmvdisk vs list --vs all
   ```
@@ -228,7 +252,8 @@
   ```
   - `--trim auto` : NVMe, SATA 섞여 있을 때 trim을 선언해줌으로써 디스크를 혼용해서 쓴다는 사실 알려줌.
   - `--mmcrfs` : gpfs의 파일 시스템 생성 유틸리티인 mmcrfs 명령을 내부적으로 사용하여 파일시스템 생성
-  - `-m 2` : 메타데이터의 복제본 수 설정 (메타데이터의 이중화를 통해 장애 발생 시 안정성을 높임)
+  - `-m 2` : 최소 메타데이터의 복제본 수 설정 (메타데이터의 이중화를 통해 장애 발생 시 안정성을 높임)
+  - `-M` : 최대 메타데이터 복제본 개수 설정
   - `-B 16M` : block size
   - `-n 256` : 해당 파일 시스템에 동시에 접근할 수 있는 최대 노드의 수
   - `-T /gpfs` : 생성된 파일 시스템이 마운트될 경로 지정 (마운트 포인트)
@@ -251,9 +276,9 @@
   <br>
   
   ```
-  mmount gpfs -a (all)
+  mmount gpfs -a (all) // 생성한 파일시스템으로 모든 Cluster node에 마운트
   ```
-  - mmshutdown -a 사용하면 모든 서버가 다운되기 때문에 조심해야 함
+  - `mmshutdown -a` 사용하면 모든 서버가 다운되기 때문에 조심해야 함
 
   </br>
   
