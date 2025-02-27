@@ -1,6 +1,39 @@
-# 구성
+# 구성 전 선행작업
+1. ssh-keygen
+   ```
+   ## master server에서 ssh-keygen 생성 후 각 노드로 전달
+   ## 생성한 keygen을 scp 또는 rsync를 사용해 cluster 및 client node로 전달
+   # ssh-keygen -t rsa 2048/4096 -C master  // keygen 생성
+   ```
+
+2. 보안 관련 데몬 중지 및 미사용으로 변경
+   ```
+   # systemctl stop firewalld
+   # systemctl disable firewalld
+   # systemctl status firewalld
+
+   # sed -i 's/^SELINUX=enforcing/SELINUX=disabled/g' >> /etc/selinux/config
+   # sestatus 또는 # getenforce  // 확인
+   ```
+3. ESS Host 및 Client 구성
+   ```
+   # vi /etc/hosts
+   192.168.0.224 sss6k01a-fsp
+   192.168.0.225 sss6k01b-fsp
+
+   #### Ecore sss 6000 ib network
+   172.20.0.21 sss6k01a-hs.gpfs sss6k01a-hs s1
+   172.20.0.22 sss6k01b-hs.gpfs sss6k01b-hs s2
+   
+   // 이런식으로 적어줘야 하는데, Management IP 대역과 InfiniBand IP 대역을 나눠줘야 함!!!!!
+   ```
+<br></br>
+
 ###### 클러스터를 먼저 짜야 로직이 들어감
-<br></br><br></br>
+
+---
+
+<br></br>
 
 ## 1. 클러스터 생성<br/>
   ### 1.1 PATH 지정 // 환경변수 지정 <br>
