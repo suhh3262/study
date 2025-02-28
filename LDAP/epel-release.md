@@ -1,3 +1,4 @@
+### 공식 홈페이지에 없을 때 사용
 
 ```
 [root@master yum.repos.d]# vi CentOS-Base.repo
